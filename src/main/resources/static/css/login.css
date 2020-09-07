@@ -1,0 +1,21 @@
+.loginForm {
+    border: 3px solid #f1f1f1;
+    padding: 16px;
+}
+
+.loginForm > input {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+}
+
+.loginForm > button#submit {
+    background-color: blue;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+}

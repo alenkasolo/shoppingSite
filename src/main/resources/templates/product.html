@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<head>
+    <meta th:replace="fragments::meta">
+    <th:block th:replace="fragments::swiper"/>
+    <link th:replace="fragments::common-style">
+    <link rel="stylesheet" th:href="@{/css/product.css}">
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+    <title>product detail</title>
+
+</head>
+<body th:with="loggedIn = ${user != null}">
+<form th:if="${loggedIn == false}" id="form-signin" class="loginForm not-required" th:action="@{/login}" action="/login" method="post">
+    <label for="username"><b>Username</b></label>
+    <input type="text" placeholder="Enter Username" id="username" name="username" required>
+
+    <label for="password"><b>Password</b></label>
+    <input type="password" placeholder="Enter Password" id="password" name="password" required>
+
+    <button id="submit" type="submit">Login</button>
+    <button type="button" class="quit-button" id="quit-button"><i class="fa fa-times" aria-hidden="true"></i></button>
+    <a th:href="@{/signup}">Sign up</a>
+</form>
+<div th:replace="fragments::navigation-bar"></div>
+<b th:text="${product.name} + '(' + ${price} + ')'" class="product-details"></b>
+<th:block th:switch="${loggedIn}">
+    <form th:case="true" th:action="@{/addToCart}" method="post" id="add-to-cart">
+        <input type="hidden" th:name="product" th:value="${order.product.id}">
+        <label th:for="quantity">Quantity</label>
+        <input th:field="${order.quantity}" type="number" value="1" min="1" required style="width: 70px;">
+        <button type="submit" id="buy-button" value="buy">Add to <i class="fa fa-shopping-cart"
+                                                                    aria-hidden="true"></i></button>
+    </form>
+    <div th:case="false">
+        Please log in to buy:
+        <button type="button" class="submit display-login-form-button">log in</button>
+    </div>
+</th:block>
+<hr>
+<div class="swiper-container">
+    <div class="swiper-wrapper">
+        <th:block th:each="image : ${product.productImages}">
+            <div class="swiper-slide">
+                <img th:src="#{cdn} + ${image.url}" alt="something wrong here"
+                     src=""/>
+            </div>
+        </th:block>
+    </div>
+    <!-- Add Arrows -->
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+</div>
+<hr>
+<b th:text="Description" class="product-details"></b>
+<div id="description-container">
+    <div id="description" th:utext="${product.description}"></div>
+</div>
+<hr>
+<b th:text="comment" class="product-details"></b>
+
+<div id="comments-container">
+    <div th:if="${product.comments} != null" th:each="comment : ${product.comments}" class="comment">
+        <b th:text="${comment.userId.name}" class="user-name"></b>
+        <br>
+        <div th:text="${comment.message}" class="user-comment"></div>
+        <div th:if="${loggedIn == true && user.id == comment.userId.id}" class="comment-button">
+            <button type="button" name="deleteComment" th:value="${comment.id}">delete comment</button>
+            <button type="button" name="updateComment" th:value="${comment.id}">update comment</button>
+        </div>
+    </div>
+</div>
+
+<th:block th:switch="${loggedIn}">
+
+    <div th:case="true" id="comment-upload-container">
+        <form th:action="@{/comment}" th:id="form" method="post">
+            <input type="hidden" th:name="productId" th:value="${product.id}">
+            <label>
+                        <textarea th:field="${comment.message}" class="comment"
+                                  placeholder="Write comment here"></textarea>
+            </label>
+            <input type="submit" id="submit" value="comment">
+        </form>
+    </div>
+    <div th:case="false">
+        Please log in to comment:
+        <button type="button" class="submit display-login-form-button">log in</button>
+    </div>
+</th:block>
+<script th:src="@{/javascript/navigationBar.js}"></script>
+<script th:src="@{/javascript/product.js}"></script>
+</body>
+</html>

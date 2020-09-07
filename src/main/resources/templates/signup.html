@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<head>
+    <meta th:replace="fragments::meta">
+    <link th:replace="fragments::common-style">
+    <link th:replace="fragments::font-awesome">
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+
+    <title>Sign Up</title>
+</head>
+<body>
+<div th:replace="fragments::navigation-bar"></div>
+<form th:action="@{/signup}" method="post" class="loginForm">
+    <label th:for="name"><b>User Name</b></label>
+    <div th:if="${#fields.hasErrors('user.name')}" th:errors="${user.name}" class="errors"></div>
+    <div th:if="${userNameTaken}" th:text="${userNameTaken}" class="errors"></div>
+    <input type="text" th:field="${user.name}">
+    <label th:for="password"><b>Password</b></label>
+    <div th:if="${#fields.hasErrors('user.password')}" th:errors="${user.password}" class="errors"></div>
+    <input type="password" th:field="${user.password}">
+    <label th:for="address"><b>Address</b></label>
+    <div th:if="${#fields.hasErrors('user.address')}" th:errors="${user.address}" class="errors"></div>
+    <input type="text" th:field="${user.address}">
+    <label th:for="tel"><b>Telephone Number</b></label>
+    <div th:if="${#fields.hasErrors('user.tel')}" th:errors="${user.tel}" class="errors"></div>
+    <input type="number" th:field="${user.tel}">
+    <button type="submit">Register</button>
+</form>
+<script th:src="@{/javascript/navigationBar.js}"></script>
+<script th:src="@{/javascript/signup.js}"></script>
+</body>
+</html>

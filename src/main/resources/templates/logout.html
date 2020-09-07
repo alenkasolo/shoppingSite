@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<head>
+    <meta th:replace="fragments::meta">
+    <link th:replace="fragments::common-style">
+    <link th:replace="fragments::font-awesome">
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+    <title>Logout</title>
+</head>
+<body>
+<form th:action="@{/logout}" method="post" class="loginForm">
+    <button id="submit" type="submit">log out</button>
+</form>
+</body>
+</html>

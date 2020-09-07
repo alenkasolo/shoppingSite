@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<head>
+    <meta th:replace="fragments::meta">
+    <th:block th:replace="fragments::swiper"/>
+    <link th:replace="fragments::common-style">
+    <link rel="stylesheet" th:href="@{/css/category.css}">
+
+    <title>Home Page</title>
+</head>
+<body th:with="loggedIn = ${user != null}">
+<div th:replace="fragments::navigation-bar"></div>
+<th:block th:each="products : ${productsOfAllCategories}">
+        <h1 th:text="${products[0].categoryId.name}" style="font-size: 25px; margin-bottom: 5px"></h1>
+    <ul class="category-container">
+        <li th:each="product : ${products}">
+            <a th:href="'/product/' + ${product.name}">
+                <img th:src="#{cdn} + ${product.thumbnail.image.url}" alt="oops! something wrong" src="">
+                <div th:text="${product.name}"></div>
+                <div th:text="${#numbers.formatCurrency(product.price)}"></div>
+            </a>
+        </li>
+    </ul>
+</th:block>
+<script th:src="@{/javascript/navigationBar.js}"></script>
+<script th:src="@{/javascript/home.js}"></script>
+</body>
+</html>

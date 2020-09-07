@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<head>
+    <meta th:replace="fragments::meta">
+    <th:block th:replace="fragments::swiper"/>
+    <link th:replace="fragments::common-style">
+    <link rel="stylesheet" th:href="@{/css/richtext.min.css}">
+    <title>Upload File</title>
+</head>
+<body th:with="loggedIn = ${user != null}">
+<div th:replace="fragments::navigation-bar"></div>
+<form th:action="@{/upload}" method="post" enctype="multipart/form-data" id="product">
+    <label th:for="name">product name</label>
+    <br>
+    <input type="text" th:field="${product.name}">
+    <div th:if="${#fields.hasErrors('product.name')}" th:errors="${product.name}" class="errors"></div>
+    <div th:if="${duplicateName}" th:text="${duplicateName}" class="errors"></div>
+    <br>
+    <label th:for="price">price</label>
+    <br>
+    <input type="number" th:field="${product.price}">
+    <div th:if="${#fields.hasErrors('product.price')}" th:errors="${product.price}" class="errors"></div>
+    <br>
+    <br>
+    <label th:each="category : ${categories}">
+        <input type="radio"
+               th:field="${product.categoryId}"
+               th:value="${category.id}"
+               th:text="${category.name}">
+    </label>
+    <br>
+    <div th:if="${#fields.hasErrors('product.categoryId')}" th:errors="${product.categoryId}" class="errors"></div>
+    <div th:if="${categoryNotFound}" th:text="${categoryNotFound}" class="errors"></div>
+    <br>
+
+    <label th:for="description">description</label>
+    <br>
+    <textarea th:field="${product.description}" rows="10" cols="50"></textarea>
+    <div th:if="${#fields.hasErrors('product.description')}" th:errors="${product.description}" class="errors"></div>
+    <br>
+
+    <label th:for="multipartFile">Select images: </label>
+    <br>
+    <input type="file" name="files" accept="image/*" value="hey" multiple>
+    <div th:if="${#fields.hasErrors('product.files')}" th:errors="${product.files}" class="errors"></div>
+    <br>
+    <input type="submit" value="upload">
+</form>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script th:src="@{/javascript/jquery.richtext.min.js}"></script>
+<script th:src="@{/javascript/navigationBar.js}"></script>
+<script th:src="@{/javascript/upload.js}"></script>
+</body>
+</html>

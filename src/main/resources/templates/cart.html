@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<head>
+    <meta th:replace="fragments::meta">
+    <th:block th:replace="fragments::swiper"/>
+    <link th:replace="fragments::common-style">
+    <link rel="stylesheet" th:href="@{/css/cart.css}">
+    <title>Cart</title>
+</head>
+<body th:with="loggedIn = ${user != null}">
+<div th:replace="fragments::navigation-bar"></div>
+<th:block th:switch="${orders.isEmpty()}">
+    <th:block th:case="false">
+        <ul th:each="order : ${orders}">
+            <li>
+                <img th:src="#{cdn} + ${order.product.thumbnail.image.url}" alt="something wrong here" width="300px">
+                <br>
+                <a th:href="@{'/product/' + ${order.product.name}}" th:text="${order.product.name}"></a>
+            </li>
+            <form th:action="@{/changeQuantity}" method="post" class="change-quantity">
+                <input type="hidden" th:value="${order.id}" name="id">
+                <label th:for="order.quantity">quantity</label>
+                <input type="number" th:value="${order.quantity}" th:name="quantity" min="1" id="quantity">
+                <button type="submit">change quantity</button>
+            </form>
+        </ul>
+        <br>
+        <div th:text="'total amount: ' + ${totalAmount}" id="totalAmount"></div>
+        <br>
+        <h1 th:if="${error != null}" th:text="${error}" class="errors"></h1>
+        <form th:action="@{/charge}" method="post" id="payment-form">
+            <div class="form-row">
+                <label for="card-element">
+                    Credit or debit card
+                </label>
+                <div id="card-element">
+                    <!-- A Stripe Element will be inserted here. -->
+                </div>
+
+                <!-- Used to display Element errors. -->
+                <div id="card-errors" role="alert"></div>
+            </div>
+            <br>
+            <button>Submit Payment</button>
+        </form>
+    </th:block>
+    <p th:case="true" id="nothingYet">Nothing yet</p>
+</th:block>
+<h1>Success Test case</h1>
+<table style="border: 1px solid black">
+    <tr>
+        <th style="padding-right: 10px">NUMBER</th>
+        <th style="padding-right: 10px">BRAND</th>
+        <th style="padding-right: 10px">CVC</th>
+        <th style="padding-right: 10px">DATE</th>
+    </tr>
+    <tr>
+        <td style="padding-right: 10px">4242424242424242</td>
+        <td style="padding-right: 10px">Visa</td>
+        <td style="padding-right: 10px">Any 3 digits</td>
+        <td style="padding-right: 10px">Any future date</td>
+    </tr>
+</table>
+<h1>Fail Test case</h1>
+<table style="border: 1px solid black">
+    <tr>
+        <th style="padding-right: 10px">NUMBER</th>
+        <th style="padding-right: 10px">DESCRIPTION</th>
+    </tr>
+    <tr>
+        <td style="padding-right: 10px">4000000000000069</td>
+        <td style="padding-right: 10px">Charge is declined with an expired_card code.</td>
+    </tr>
+</table>
+<script th:replace="fragments::loader"></script>
+<script th:src="@{/javascript/navigationBar.js}"></script>
+<script src="https://js.stripe.com/v3/"></script>
+<script th:src="@{/javascript/cart.js}"></script>
+</body>
+</html>

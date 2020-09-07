@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"
+          charset="UTF-8" th:fragment="meta">
+    <th:block th:fragment="swiper">
+        <!-- swiper library -->
+        <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" th:fragment="font-awesome">
+        <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    </th:block>
+    <link rel="stylesheet" th:href="@{/css/common.css}" th:fragment="common-style">
+    <script th:src="@{/javascript/loader.js}" th:fragment="loader"></script>
+</head>
+<body>
+<div id="navigation-bar" th:fragment="navigation-bar">
+    <a href="#" id="bar-icon">
+        <i class="fa-bars fa" aria-hidden="true"></i>
+    </a>
+    <a th:href="@{/}" id="home">Home</a>
+    <a th:href="@{/category/smart phone?page=0}">Smart Phone</a>
+    <a th:href="@{/category/tablet?page=0}">Tablet</a>
+    <a th:href="@{/category/laptop?page=0}">Laptop</a>
+    <a th:href="@{/cart}" id="cart">
+        <i class="fa fa-shopping-cart" aria-hidden="true"><span th:if="${loggedIn == true}" id="number-of-items" th:text="${existedOrders}"></span></i>
+    </a>
+    <a th:if="${loggedIn == true}" th:href="@{/logout}">Log out</a>
+    <a th:href="@{/upload}">Upload product</a>
+    <form th:action="@{/search}" method="get">
+        <input type="text" placeholder="search..." name="search" th:value="${searchQuery} == null ? '' : ${searchQuery}" required>
+        <button type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+    </form>
+</div>
+</body>
+</html>
